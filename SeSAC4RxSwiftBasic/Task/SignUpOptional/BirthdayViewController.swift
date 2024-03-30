@@ -24,7 +24,6 @@ final class BirthdayViewController: UIViewController {
     let infoLabel: UILabel = {
        let label = UILabel()
         label.textColor = .black
-        label.text = "만 17세 이상만 가입 가능합니다."
         return label
     }()
     
@@ -38,27 +37,19 @@ final class BirthdayViewController: UIViewController {
     
     let yearLabel: UILabel = {
        let label = UILabel()
-//        label.text = "2023년"
         label.textColor = .black
         label.snp.makeConstraints {
             $0.width.equalTo(100)
         }
         return label
     }()
-    
-    // yearLabel에 보여질 year (observable)
-    // datepicker로 만들어지는 year (observer)
-    // Observable + Observer = Subject
-    // Subject -> BehaviorSubject, PublishSubject
-    
-    // DatePicker는 안보일 확률이 0% -> 초기값이 없는 PublishSubject를 써도 무방하다
+
     private let year = PublishSubject<String>()
     private let month = PublishSubject<String>()
     private let day = PublishSubject<String>()
     
     let monthLabel: UILabel = {
        let label = UILabel()
-//        label.text = "33월"
         label.textColor = .black
         label.snp.makeConstraints {
             $0.width.equalTo(100)
@@ -68,7 +59,6 @@ final class BirthdayViewController: UIViewController {
     
     let dayLabel: UILabel = {
        let label = UILabel()
-//        label.text = "99일"
         label.textColor = .black
         label.snp.makeConstraints {
             $0.width.equalTo(100)
@@ -134,7 +124,24 @@ final class BirthdayViewController: UIViewController {
             .map { "\($0)년" }
             .bind(to: yearLabel.rx.text)
             .disposed(by: disposebag)
+
+        let adultYear = year.map { Int($0)! <= 2017 }
+
+        adultYear
+            .bind(with: self) { owner, value in
+                let validTextColor: UIColor = value ? .systemBlue : .systemRed
+                owner.infoLabel.textColor = validTextColor
+                let validText: String = value ? "가입 가능한 나이입니다" : "만 17세 이상만 가입 가능합니다."
+                owner.infoLabel.text = validText
+                let validButtonColor: UIColor = value ? .systemBlue : .lightGray
+                owner.nextButton.backgroundColor = validButtonColor
+            }
+            .disposed(by: disposebag)
         
+        adultYear
+            .bind(to: nextButton.rx.isEnabled)
+            .disposed(by: disposebag)
+                                
         month
             .map { "\($0)월" }
             .bind(to: monthLabel.rx.text)
@@ -158,7 +165,6 @@ final class BirthdayViewController: UIViewController {
                 owner.month.onNext("\(month)")
                 owner.day.onNext("\(day)")
             }
-        
             .disposed(by: disposebag)
     }
 }

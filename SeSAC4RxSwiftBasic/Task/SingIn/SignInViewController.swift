@@ -102,7 +102,7 @@ final class SignInViewController: UIViewController {
             .map{ $0.count >= 8 }
         
         let everythingValidated = Observable.combineLatest(emailValidated, passwordValidated).map { $0 && $1 }
-        
+                
         passwordDescription
             .bind(to: passwordValidateLabel.rx.text)
             .disposed(by: disposebag)
