@@ -101,6 +101,8 @@ final class SignInViewController: UIViewController {
         let passwordValidated = passwordTextField.rx.text.orEmpty
             .map{ $0.count >= 8 }
         
+        let everythingValidated = Observable.combineLatest(emailValidated, passwordValidated).map { $0 && $1 }
+        
         passwordDescription
             .bind(to: passwordValidateLabel.rx.text)
             .disposed(by: disposebag)
@@ -110,12 +112,12 @@ final class SignInViewController: UIViewController {
             .bind(to: emailValidateLabel.rx.isHidden)
             .disposed(by: disposebag)
         
-        passwordValidated
+        everythingValidated
             .bind(to: passwordValidateLabel.rx.isHidden, signInButton.rx.isEnabled)
             .disposed(by: disposebag)
         
-        // email 형식이 맞으면 로그인 버튼 색상을 바꿔보자
-        passwordValidated
+        // 형식이 맞으면 로그인 버튼 색상을 바꿔보자
+        everythingValidated
             .bind(with: self) { owner, value in
                 let color: UIColor = value ? .systemPink : .lightGray
                 owner.signInButton.backgroundColor = color

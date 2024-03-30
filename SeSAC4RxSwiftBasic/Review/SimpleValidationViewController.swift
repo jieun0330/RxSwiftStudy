@@ -101,21 +101,14 @@ final class SimpleValidationViewController: BaseViewController {
         
         let validatedName = userNameTextField.rx.text.orEmpty
             .map { $0.count > 5 }
-//            .bind(to: userNameValidationLabel.rx.isHidden)
-//            .disposed(by: disposebag) // 상수로 만들어진 이 친구가 어디선가 쓰일거니까 disposed를 쓰지말라는 오류인건가?
         
         let validatedPassword = passwordTextField.rx.text.orEmpty
             .map { $0.count > 5 }
-//            .bind(to: passwordValidationLabel.rx.isHidden)
-//            .disposed(by: disposebag)
         
         // 🚨 combineLatest
         let everythingValidated = Observable.combineLatest(validatedName, validatedPassword) { $0 && $1 }
         
         validationButton.rx.tap
-//            .bind { _ in
-//                self.showAlert()
-//            } // [weak self] 대신 쓸 수 있는거
             .bind(with: self) { owner, _ in
                 owner.showAlert()
             }
