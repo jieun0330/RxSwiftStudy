@@ -82,9 +82,10 @@ final class BirthdayViewController: UIViewController {
     }
     
     @objc func nextButtonClicked() {
-        print("가입완료")
+        let vc = SampleViewController()
+        let nav = UINavigationController(rootViewController: vc)
+        present(nav, animated: true)
     }
-
     
     func configureLayout() {
         view.addSubview(infoLabel)
