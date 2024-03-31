@@ -37,6 +37,7 @@
 		C2A18C862BB7D2DA00D1F770 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A18C852BB7D2DA00D1F770 /* SignInViewController.swift */; };
 		C2A18C892BB7D30000D1F770 /* SingUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A18C882BB7D30000D1F770 /* SingUpViewController.swift */; };
 		C2A18C8B2BB803EA00D1F770 /* SampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A18C8A2BB803EA00D1F770 /* SampleViewController.swift */; };
+		C2A18C902BB8081500D1F770 /* TaskTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A18C8F2BB8081500D1F770 /* TaskTableViewController.swift */; };
 		C2DE8E862BB2E2A300542368 /* ReviewTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2DE8E852BB2E2A300542368 /* ReviewTableViewController.swift */; };
 		C2DE8E882BB2EC5900542368 /* ReviewBasicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2DE8E872BB2EC5900542368 /* ReviewBasicViewController.swift */; };
 		C2DE8E8A2BB2F48B00542368 /* PickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2DE8E892BB2F48B00542368 /* PickerViewController.swift */; };
@@ -70,6 +71,7 @@
 		C2A18C852BB7D2DA00D1F770 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		C2A18C882BB7D30000D1F770 /* SingUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingUpViewController.swift; sourceTree = "<group>"; };
 		C2A18C8A2BB803EA00D1F770 /* SampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleViewController.swift; sourceTree = "<group>"; };
+		C2A18C8F2BB8081500D1F770 /* TaskTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTableViewController.swift; sourceTree = "<group>"; };
 		C2DE8E852BB2E2A300542368 /* ReviewTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewTableViewController.swift; sourceTree = "<group>"; };
 		C2DE8E872BB2EC5900542368 /* ReviewBasicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewBasicViewController.swift; sourceTree = "<group>"; };
 		C2DE8E892BB2F48B00542368 /* PickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerViewController.swift; sourceTree = "<group>"; };
@@ -138,11 +140,11 @@
 		C2A18C762BB6C02A00D1F770 /* Task */ = {
 			isa = PBXGroup;
 			children = (
+				C2A18C8F2BB8081500D1F770 /* TaskTableViewController.swift */,
 				C2A18C842BB7D2CB00D1F770 /* SingIn */,
 				C2A18C812BB6C0D400D1F770 /* SingUp */,
 				C2A18C802BB6C0BD00D1F770 /* SignUpOptional */,
 				C2A18C772BB6C03500D1F770 /* CustomView */,
-				C2A18C8A2BB803EA00D1F770 /* SampleViewController.swift */,
 			);
 			path = Task;
 			sourceTree = "<group>";
@@ -162,6 +164,7 @@
 				C2A18C7C2BB6C0A000D1F770 /* PhoneViewController.swift */,
 				C2A18C7E2BB6C0B100D1F770 /* NicknameViewController.swift */,
 				C2A18C822BB6C0F700D1F770 /* BirthdayViewController.swift */,
+				C2A18C8A2BB803EA00D1F770 /* SampleViewController.swift */,
 			);
 			path = SignUpOptional;
 			sourceTree = "<group>";
@@ -284,6 +287,7 @@
 			files = (
 				C21902192BB2574B00007F25 /* ViewController.swift in Sources */,
 				C2A18C7D2BB6C0A000D1F770 /* PhoneViewController.swift in Sources */,
+				C2A18C902BB8081500D1F770 /* TaskTableViewController.swift in Sources */,
 				C2DE8E862BB2E2A300542368 /* ReviewTableViewController.swift in Sources */,
 				C219023C2BB2928100007F25 /* BasicViewController.swift in Sources */,
 				C21902152BB2574B00007F25 /* AppDelegate.swift in Sources */,
