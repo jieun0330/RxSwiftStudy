@@ -41,7 +41,7 @@ final class ShoppingTableViewController: BaseViewController {
     private lazy var data = BehaviorSubject(value: items)
     
     private let disposeBag = DisposeBag()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -92,6 +92,15 @@ final class ShoppingTableViewController: BaseViewController {
             .bind(to: tableView.rx.items(cellIdentifier: ShoppingTableTableViewCell.identifier, cellType: ShoppingTableTableViewCell.self)) { row, element, cell in
                 
                 cell.itemTitle.text = element
+            }
+            .disposed(by: disposeBag)
+        
+        searchBar.rx.text.orEmpty
+            .debounce(.seconds(1), scheduler: MainScheduler.instance)
+            .distinctUntilChanged()
+            .bind(with: self) { owner, value in
+                let result = value.isEmpty ? owner.items : owner.items.filter { $0.contains(value) }
+                owner.data.onNext(result)
             }
             .disposed(by: disposeBag)
     }
