@@ -28,6 +28,8 @@
 		C219023C2BB2928100007F25 /* BasicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C219023B2BB2928100007F25 /* BasicViewController.swift */; };
 		C21902492BB2DAFB00007F25 /* ReviewButtonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21902482BB2DAFB00007F25 /* ReviewButtonViewController.swift */; };
 		C219024B2BB2DB7500007F25 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C219024A2BB2DB7500007F25 /* BaseViewController.swift */; };
+		C2455C822BBAAF9200150A16 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2455C812BBAAF9200150A16 /* SearchViewController.swift */; };
+		C2455C842BBAAFC600150A16 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2455C832BBAAFC600150A16 /* SearchTableViewCell.swift */; };
 		C2A18C752BB6C01800D1F770 /* PasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A18C742BB6C01800D1F770 /* PasswordViewController.swift */; };
 		C2A18C792BB6C04100D1F770 /* SignTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A18C782BB6C04100D1F770 /* SignTextField.swift */; };
 		C2A18C7B2BB6C07E00D1F770 /* PointButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A18C7A2BB6C07E00D1F770 /* PointButton.swift */; };
@@ -62,6 +64,8 @@
 		C219023B2BB2928100007F25 /* BasicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicViewController.swift; sourceTree = "<group>"; };
 		C21902482BB2DAFB00007F25 /* ReviewButtonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewButtonViewController.swift; sourceTree = "<group>"; };
 		C219024A2BB2DB7500007F25 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		C2455C812BBAAF9200150A16 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		C2455C832BBAAFC600150A16 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		C2A18C742BB6C01800D1F770 /* PasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordViewController.swift; sourceTree = "<group>"; };
 		C2A18C782BB6C04100D1F770 /* SignTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignTextField.swift; sourceTree = "<group>"; };
 		C2A18C7A2BB6C07E00D1F770 /* PointButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointButton.swift; sourceTree = "<group>"; };
@@ -198,6 +202,8 @@
 				C203CAF12BB3FEC400906E33 /* SimpleTableViewController.swift */,
 				C203CAF92BB41FDF00906E33 /* SimpleValidationViewController.swift */,
 				C203CAFB2BB4428A00906E33 /* SeSAC61ViewController.swift */,
+				C2455C812BBAAF9200150A16 /* SearchViewController.swift */,
+				C2455C832BBAAFC600150A16 /* SearchTableViewCell.swift */,
 			);
 			path = Review;
 			sourceTree = "<group>";
@@ -288,6 +294,7 @@
 				C21902192BB2574B00007F25 /* ViewController.swift in Sources */,
 				C2A18C7D2BB6C0A000D1F770 /* PhoneViewController.swift in Sources */,
 				C2A18C902BB8081500D1F770 /* TaskTableViewController.swift in Sources */,
+				C2455C822BBAAF9200150A16 /* SearchViewController.swift in Sources */,
 				C2DE8E862BB2E2A300542368 /* ReviewTableViewController.swift in Sources */,
 				C219023C2BB2928100007F25 /* BasicViewController.swift in Sources */,
 				C21902152BB2574B00007F25 /* AppDelegate.swift in Sources */,
@@ -297,6 +304,7 @@
 				C2A18C752BB6C01800D1F770 /* PasswordViewController.swift in Sources */,
 				C21902492BB2DAFB00007F25 /* ReviewButtonViewController.swift in Sources */,
 				C2A18C892BB7D30000D1F770 /* SingUpViewController.swift in Sources */,
+				C2455C842BBAAFC600150A16 /* SearchTableViewCell.swift in Sources */,
 				C2DE8E882BB2EC5900542368 /* ReviewBasicViewController.swift in Sources */,
 				C2A18C832BB6C0F700D1F770 /* BirthdayViewController.swift in Sources */,
 				C21902172BB2574B00007F25 /* SceneDelegate.swift in Sources */,
