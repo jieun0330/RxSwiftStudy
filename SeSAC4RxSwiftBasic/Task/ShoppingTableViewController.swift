@@ -12,9 +12,9 @@ import RxSwift
 import RxCocoa
 
 struct Item {
-    var check: Bool
+    var check: Bool = false
     var item: String
-    var star: Bool
+    var star: Bool = false
 }
 
 final class ShoppingTableViewController: BaseViewController {
@@ -36,7 +36,8 @@ final class ShoppingTableViewController: BaseViewController {
         $0.rowHeight = 100
     }
     
-    private var items = ["그립톡 구매하기", "사이다 구매", "아이패드 케이스 최저가 알아보기", "양말"]
+    private var items: [Item] = [Item(item: "그립톡 구매하기"), Item(item: "사이다 구매")]
+//    private var items = ["그립톡 구매하기", "사이다 구매", "아이패드 케이스 최저가 알아보기", "양말"]
     
     private lazy var data = BehaviorSubject(value: items)
     
@@ -46,7 +47,6 @@ final class ShoppingTableViewController: BaseViewController {
         super.viewDidLoad()
         
         bind()
-        
     }
     
     override func configureHierarchy() {
@@ -82,7 +82,7 @@ final class ShoppingTableViewController: BaseViewController {
     
     @objc private func addButtonClicked() {
         let addItem = searchBar.text
-        items.append(addItem!)
+        items.append(Item(item: addItem!))
         data.onNext(items)
         searchBar.text?.removeAll()
     }
@@ -91,15 +91,30 @@ final class ShoppingTableViewController: BaseViewController {
         data
             .bind(to: tableView.rx.items(cellIdentifier: ShoppingTableTableViewCell.identifier, cellType: ShoppingTableTableViewCell.self)) { row, element, cell in
                 
-                cell.itemTitle.text = element
+                cell.itemTitle.text = element.item
+                cell.check.rx.tap
+                    .bind(with: self) { owner, _ in
+                        owner.items[row].check.toggle()
+                        owner.items[row].check ? cell.check.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal) : cell.check.setImage(UIImage(systemName: "checkmark.square"), for: .normal)
+                        
+                    }
+                    .disposed(by: cell.disposeBag)
+                
+                cell.starButton.rx.tap
+                    .bind(with: self) { owner, _ in
+                        owner.items[row].star.toggle()
+                        owner.items[row].star ? cell.starButton.setImage(UIImage(systemName: "star.fill"), for: .normal) : cell.starButton.setImage(UIImage(systemName: "star"), for: .normal)
+                    }
+                    .disposed(by: cell.disposeBag)
             }
             .disposed(by: disposeBag)
         
         searchBar.rx.text.orEmpty
-            .debounce(.seconds(1), scheduler: MainScheduler.instance)
+//            .debounce(.seconds(1), scheduler: MainScheduler.instance)
             .distinctUntilChanged()
             .bind(with: self) { owner, value in
-                let result = value.isEmpty ? owner.items : owner.items.filter { $0.contains(value) }
+                
+                let result = value.isEmpty ? owner.items : owner.items.filter { $0.item.contains(value) }
                 owner.data.onNext(result)
             }
             .disposed(by: disposeBag)
