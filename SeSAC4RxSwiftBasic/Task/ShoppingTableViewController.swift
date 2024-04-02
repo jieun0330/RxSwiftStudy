@@ -36,8 +36,10 @@ final class ShoppingTableViewController: BaseViewController {
         $0.rowHeight = 100
     }
     
-    private var items: [Item] = [Item(item: "그립톡 구매하기"), Item(item: "사이다 구매")]
-//    private var items = ["그립톡 구매하기", "사이다 구매", "아이패드 케이스 최저가 알아보기", "양말"]
+    private var items: [Item] = [Item(item: "그립톡 구매하기"),
+                                 Item(item: "사이다 구매"),
+                                 Item(item: "아이패드 케이스 최저가 알아보기"),
+                                 Item(item: "양말")]
     
     private lazy var data = BehaviorSubject(value: items)
     
@@ -81,6 +83,8 @@ final class ShoppingTableViewController: BaseViewController {
     }
     
     @objc private func addButtonClicked() {
+        
+        if searchBar.text?.trimmingCharacters(in: .whitespaces) == "" { return }
         let addItem = searchBar.text
         items.append(Item(item: addItem!))
         data.onNext(items)
@@ -96,7 +100,6 @@ final class ShoppingTableViewController: BaseViewController {
                     .bind(with: self) { owner, _ in
                         owner.items[row].check.toggle()
                         owner.items[row].check ? cell.check.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal) : cell.check.setImage(UIImage(systemName: "checkmark.square"), for: .normal)
-                        
                     }
                     .disposed(by: cell.disposeBag)
                 
