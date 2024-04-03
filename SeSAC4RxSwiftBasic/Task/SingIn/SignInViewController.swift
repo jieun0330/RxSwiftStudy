@@ -106,7 +106,8 @@ final class SignInViewController: BaseViewController {
             .disposed(by: disposebag)
         
         viewModel.emailDescription
-            .bind(to: emailValidateLabel.rx.text)
+            .asDriver()
+            .drive(emailValidateLabel.rx.text)
             .disposed(by: disposebag)
         
         passwordTextField.rx.text.orEmpty
@@ -114,7 +115,8 @@ final class SignInViewController: BaseViewController {
             .disposed(by: disposebag)
         
         viewModel.passwordDescription
-            .bind(to: passwordValidateLabel.rx.text)
+            .asDriver()
+            .drive(passwordValidateLabel.rx.text)
             .disposed(by: disposebag)
         
         // email 형식이 맞으면 "올바른~"을 지우고, 로그인 버튼 활성화 시켜보자
