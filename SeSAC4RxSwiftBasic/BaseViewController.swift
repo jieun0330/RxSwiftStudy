@@ -16,7 +16,6 @@ class BaseViewController: UIViewController {
         configureConstraints()
         configureView()
     }
-    
     func configureHierarchy() { }
     func configureConstraints() { }
     func configureView() { }

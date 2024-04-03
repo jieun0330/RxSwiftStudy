@@ -10,9 +10,52 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-final class BirthdayViewController: UIViewController {
+final class BirthdayViewController: BaseViewController {
     
-    let birthDayPicker: UIDatePicker = {
+    private let viewModel = BirthdayViewModel()
+    
+    private let infoLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        return label
+    }()
+    
+    private let containerStackView: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .horizontal
+        stack.distribution = .equalSpacing
+        stack.spacing = 10
+        return stack
+    }()
+    
+    private let yearLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.snp.makeConstraints {
+            $0.width.equalTo(100)
+        }
+        return label
+    }()
+    
+    private let monthLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.snp.makeConstraints {
+            $0.width.equalTo(100)
+        }
+        return label
+    }()
+    
+    private let dayLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.snp.makeConstraints {
+            $0.width.equalTo(100)
+        }
+        return label
+    }()
+    
+    private let birthDayPicker: UIDatePicker = {
         let picker = UIDatePicker()
         picker.datePickerMode = .date
         picker.preferredDatePickerStyle = .wheels
@@ -21,78 +64,41 @@ final class BirthdayViewController: UIViewController {
         return picker
     }()
     
-    let infoLabel: UILabel = {
-       let label = UILabel()
-        label.textColor = .black
-        return label
+    private lazy var nextButton: UIButton = {
+        let button = PointButton(title: "가입하기")
+        button.addTarget(self, action: #selector(nextButtonClicked), for: .touchUpInside)
+        return button
     }()
     
-    let containerStackView: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .horizontal
-        stack.distribution = .equalSpacing
-        stack.spacing = 10
-        return stack
-    }()
-    
-    let yearLabel: UILabel = {
-       let label = UILabel()
-        label.textColor = .black
-        label.snp.makeConstraints {
-            $0.width.equalTo(100)
-        }
-        return label
-    }()
-
     private let year = PublishSubject<String>()
     private let month = PublishSubject<String>()
     private let day = PublishSubject<String>()
-    
-    let monthLabel: UILabel = {
-       let label = UILabel()
-        label.textColor = .black
-        label.snp.makeConstraints {
-            $0.width.equalTo(100)
-        }
-        return label
-    }()
-    
-    let dayLabel: UILabel = {
-       let label = UILabel()
-        label.textColor = .black
-        label.snp.makeConstraints {
-            $0.width.equalTo(100)
-        }
-        return label
-    }()
-  
-    let nextButton = PointButton(title: "가입하기")
     
     private let disposebag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.backgroundColor = .white
         
-        configureLayout()
         bind()
-        
-        nextButton.addTarget(self, action: #selector(nextButtonClicked), for: .touchUpInside)
     }
     
-    @objc func nextButtonClicked() {
+    @objc private func nextButtonClicked() {
         let vc = SampleViewController()
         let nav = UINavigationController(rootViewController: vc)
         present(nav, animated: true)
     }
     
-    func configureLayout() {
-        view.addSubview(infoLabel)
-        view.addSubview(containerStackView)
-        view.addSubview(birthDayPicker)
-        view.addSubview(nextButton)
- 
+    override func configureHierarchy() {
+        [infoLabel, containerStackView, birthDayPicker, nextButton].forEach {
+            view.addSubview($0)
+        }
+        [yearLabel, monthLabel, dayLabel].forEach {
+            containerStackView.addArrangedSubview($0)
+        }
+        
+    }
+    
+    override func configureConstraints() {
         infoLabel.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(150)
             $0.centerX.equalToSuperview()
@@ -103,15 +109,11 @@ final class BirthdayViewController: UIViewController {
             $0.centerX.equalToSuperview()
         }
         
-        [yearLabel, monthLabel, dayLabel].forEach {
-            containerStackView.addArrangedSubview($0)
-        }
-        
         birthDayPicker.snp.makeConstraints {
             $0.top.equalTo(containerStackView.snp.bottom)
             $0.centerX.equalToSuperview()
         }
-   
+        
         nextButton.snp.makeConstraints { make in
             make.height.equalTo(50)
             make.top.equalTo(birthDayPicker.snp.bottom).offset(30)
@@ -119,15 +121,20 @@ final class BirthdayViewController: UIViewController {
         }
     }
     
+    override func configureView() {
+        view.backgroundColor = .white
+    }
+    
     private func bind() {
-        
-        year
+        viewModel.year
+        // driver로 변환하고싶을 때 asDriver 메서드를 사용한다
+            .asDriver()
             .map { "\($0)년" }
-            .bind(to: yearLabel.rx.text)
+            .drive(yearLabel.rx.text)
             .disposed(by: disposebag)
-
-        let adultYear = year.map { Int($0)! <= 2017 }
-
+        
+        let adultYear = viewModel.year.map { Int($0)! <= 2017 }
+        
         adultYear
             .bind(with: self) { owner, value in
                 let validTextColor: UIColor = value ? .systemBlue : .systemRed
@@ -142,30 +149,21 @@ final class BirthdayViewController: UIViewController {
         adultYear
             .bind(to: nextButton.rx.isEnabled)
             .disposed(by: disposebag)
-                                
-        month
+        
+        viewModel.month
+            .asDriver()
             .map { "\($0)월" }
-            .bind(to: monthLabel.rx.text)
+            .drive(monthLabel.rx.text)
             .disposed(by: disposebag)
         
-        day
+        viewModel.day
+            .asDriver()
             .map { "\($0)일" }
-            .bind(to: dayLabel.rx.text)
+            .drive(dayLabel.rx.text)
             .disposed(by: disposebag)
-                
+        
         birthDayPicker.rx.date
-            .bind(with: self) { owner, date in
-                let component = Calendar.current.dateComponents([.year, .month, .day], from: date)
-                // picker에 있는 날짜를 -> owner.year
-                // owner.year가 publishSubject라서
-                // bind 작업 필요없이 바로 onNext ?
-                guard let year = component.year else { return }
-                guard let month = component.month else { return }
-                guard let day = component.day else { return }
-                owner.year.onNext("\(year)")
-                owner.month.onNext("\(month)")
-                owner.day.onNext("\(day)")
-            }
+            .bind(to: viewModel.todayDate)
             .disposed(by: disposebag)
     }
 }

@@ -9,17 +9,18 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
+import Then
 
 final class SignInViewController: UIViewController {
 
-    let emailTextField = SignTextField(placeholderText: "이메일을 입력해주세요")
+    private let emailTextField = SignTextField(placeholderText: "이메일을 입력해주세요")
     private let emailValidateLabel = UILabel()
     private let emailDescription = Observable.just("올바른 이메일 형식이 아닙니다")
-    let passwordTextField = SignTextField(placeholderText: "비밀번호를 입력해주세요")
+    private let passwordTextField = SignTextField(placeholderText: "비밀번호를 입력해주세요")
     private let passwordValidateLabel = UILabel()
     private let passwordDescription = Observable.just("8자 이상 입력해주세요")
-    let signInButton = PointButton(title: "로그인")
-    let signUpButton = UIButton()
+    private let signInButton = PointButton(title: "로그인")
+    private let signUpButton = UIButton()
     private let disposebag = DisposeBag()
     
     override func viewDidLoad() {
