@@ -9,26 +9,33 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
-import Then
 
 final class PhoneViewController: BaseViewController {
     
     private let viewModel = PhoneViewModel()
-   
-    private let phoneTextField = SignTextField(placeholderText: "휴대폰번호를 입력해주세요").then {
-        $0.keyboardType = .numberPad
-    }
+    
+    private let phoneTextField: UITextField = {
+        let textField = SignTextField(placeholderText: "휴대폰번호를 입력해주세요")
+        textField.keyboardType = .numberPad
+        return textField
+    }()
+    
     private let phoneDesicription = UILabel()
-    private let nextButton = PointButton(title: "다음")
+    
+    private lazy var nextButton: UIButton = {
+        let button = PointButton(title: "다음")
+        button.addTarget(self, action: #selector(nextButtonClicked), for: .touchUpInside)
+        return button
+    }()
+    
     private let disposebag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        bind()
-        nextButton.addTarget(self, action: #selector(nextButtonClicked), for: .touchUpInside)
-    }
         
+        bind()
+    }
+    
     override func configureHierarchy() {
         [phoneTextField, phoneDesicription, nextButton].forEach {
             view.addSubview($0)
@@ -36,10 +43,10 @@ final class PhoneViewController: BaseViewController {
     }
     
     override func configureConstraints() {
-        phoneTextField.snp.makeConstraints { make in
-            make.height.equalTo(50)
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(200)
-            make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+        phoneTextField.snp.makeConstraints {
+            $0.height.equalTo(50)
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(200)
+            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
         
         phoneDesicription.snp.makeConstraints {
@@ -48,10 +55,10 @@ final class PhoneViewController: BaseViewController {
             $0.height.equalTo(20)
         }
         
-        nextButton.snp.makeConstraints { make in
-            make.height.equalTo(50)
-            make.top.equalTo(phoneTextField.snp.bottom).offset(30)
-            make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+        nextButton.snp.makeConstraints {
+            $0.height.equalTo(50)
+            $0.top.equalTo(phoneTextField.snp.bottom).offset(30)
+            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
     }
     
@@ -64,26 +71,27 @@ final class PhoneViewController: BaseViewController {
     }
     
     private func bind() {
-        viewModel.phoneDescriptionLabel
-            .bind(to: phoneDesicription.rx.text)
-            .disposed(by: disposebag)
-        
         viewModel.phoneTextFieldLabel
-            .bind(to: phoneTextField.rx.text)
+            .asDriver()
+            .drive(phoneTextField.rx.text)
             .disposed(by: disposebag)
         
-        let validatePhoneNum = phoneTextField.rx.text.orEmpty
-            .map { $0.count >= 10 }
+        viewModel.phoneDescriptionLabel
+            .asDriver()
+            .drive(phoneDesicription.rx.text)
+            .disposed(by: disposebag)
         
-        validatePhoneNum
+        phoneTextField.rx.text.orEmpty
+            .bind(to: viewModel.phoneTextField)
+            .disposed(by: disposebag)
+        
+        viewModel.validatePhoneNum
             .bind(to: phoneDesicription.rx.isHidden, nextButton.rx.isEnabled)
             .disposed(by: disposebag)
         
-        validatePhoneNum
-            .bind(with: self) { owner, value in
-                let color: UIColor = value ? .systemPink : .lightGray
-                owner.nextButton.backgroundColor = color
-            }
+        viewModel.validatePhoneNum
+            .map { $0 ? UIColor.systemPink : UIColor.lightGray }
+            .bind(to: nextButton.rx.backgroundColor)
             .disposed(by: disposebag)
     }
 }

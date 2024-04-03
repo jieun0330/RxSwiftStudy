@@ -22,11 +22,13 @@ final class PasswordViewController: BaseViewController {
         textField.isSecureTextEntry = true
         return textField
     }()
+    
     private lazy var nextButton: UIButton = {
         let button = PointButton(title: "다음")
         button.addTarget(self, action: #selector(nextButtonClicked), for: .touchUpInside)
         return button
     }()
+    
     private let descriptionLabel = UILabel()
     
     private let disposebag = DisposeBag()

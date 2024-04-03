@@ -14,18 +14,23 @@ import Then
 final class SignInViewController: BaseViewController {
     
     private let emailTextField = SignTextField(placeholderText: "이메일을 입력해주세요")
+    
     private let emailValidateLabel = UILabel()
+    
     private let passwordTextField: UITextField = {
        let textField = SignTextField(placeholderText: "비밀번호를 입력해주세요")
         textField.isSecureTextEntry = true
         return textField
     }()
+    
     private let passwordValidateLabel = UILabel()
+    
     private lazy var signInButton: UIButton = {
         let button = PointButton(title: "로그인")
         button.addTarget(self, action: #selector(signInButtonClicked), for: .touchUpInside)
         return button
     }()
+    
     private lazy var signUpButton: UIButton = {
         let button = UIButton()
         button.addTarget(self, action: #selector(signUpButtonClicked), for: .touchUpInside)
@@ -35,6 +40,7 @@ final class SignInViewController: BaseViewController {
     }()
     
     private let viewModel = SignInViewModel()
+    
     private let disposebag = DisposeBag()
     
     override func viewDidLoad() {

@@ -12,4 +12,10 @@ import RxSwift
 class PhoneViewModel {
     let phoneTextFieldLabel = BehaviorRelay(value: "010")
     let phoneDescriptionLabel = BehaviorRelay(value: "10자 이상 입력해주세요")
+    let phoneTextField = BehaviorRelay(value: "")
+    let validatePhoneNum: Observable<Bool>
+    
+    init() {
+        validatePhoneNum = phoneTextField.map { $0.count >= 10 }
+    }
 }

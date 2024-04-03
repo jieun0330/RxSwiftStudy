@@ -15,6 +15,7 @@ final class SignUpViewController: BaseViewController {
     private let viewModel = SignUpViewModel()
     
     private let emailTextField = SignTextField(placeholderText: "이메일을 입력해주세요")
+    
     private lazy var validationButton: UIButton = {
         let button = UIButton()
         button.setTitle("중복확인", for: .normal)
@@ -25,12 +26,15 @@ final class SignUpViewController: BaseViewController {
         button.addTarget(self, action: #selector(validationButtonClicked), for: .touchUpInside)
         return button
     }()
+    
     private lazy var nextButton: UIButton = {
         let button = PointButton(title: "다음")
         button.addTarget(self, action: #selector(nextButtonClicked), for: .touchUpInside)
         return button
     }()
+    
     private let buttonColor = Observable.just(UIColor.blue)
+    
     private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
