@@ -33,7 +33,6 @@ final class SignInViewController: BaseViewController {
     
     private lazy var signUpButton: UIButton = {
         let button = UIButton()
-        button.addTarget(self, action: #selector(signUpButtonClicked), for: .touchUpInside)
         button.setTitle("회원이 아니십니까?", for: .normal)
         button.setTitleColor(.black, for: .normal)
         return button
@@ -47,10 +46,6 @@ final class SignInViewController: BaseViewController {
         super.viewDidLoad()
         
         bind()
-    }
-    
-    @objc private func signInButtonClicked() {
-        print("로그인 완료")
     }
     
     @objc private func signUpButtonClicked() {

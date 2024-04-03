@@ -29,7 +29,6 @@ final class SignUpViewController: BaseViewController {
     
     private lazy var nextButton: UIButton = {
         let button = PointButton(title: "다음")
-        button.addTarget(self, action: #selector(nextButtonClicked), for: .touchUpInside)
         return button
     }()
     
@@ -41,10 +40,6 @@ final class SignUpViewController: BaseViewController {
         super.viewDidLoad()
         
         bind()
-    }
-    
-    @objc private func nextButtonClicked() {
-        print(#function)
     }
     
     @objc private func validationButtonClicked() {

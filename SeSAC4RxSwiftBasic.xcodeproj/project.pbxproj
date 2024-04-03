@@ -34,6 +34,7 @@
 		C236539A2BBD9116004BB665 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23653992BBD9115004BB665 /* SignInViewModel.swift */; };
 		C236539C2BBD9CD8004BB665 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C236539B2BBD9CD8004BB665 /* SignUpViewModel.swift */; };
 		C236539E2BBDA4F5004BB665 /* PasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C236539D2BBDA4F5004BB665 /* PasswordViewModel.swift */; };
+		C23653A02BBDAB4E004BB665 /* NicknameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C236539F2BBDAB4E004BB665 /* NicknameViewModel.swift */; };
 		C2455C822BBAAF9200150A16 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2455C812BBAAF9200150A16 /* SearchViewController.swift */; };
 		C2455C842BBAAFC600150A16 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2455C832BBAAFC600150A16 /* SearchTableViewCell.swift */; };
 		C2455C862BBAC4D200150A16 /* ShoppingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2455C852BBAC4D200150A16 /* ShoppingTableViewController.swift */; };
@@ -79,6 +80,7 @@
 		C23653992BBD9115004BB665 /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
 		C236539B2BBD9CD8004BB665 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		C236539D2BBDA4F5004BB665 /* PasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordViewModel.swift; sourceTree = "<group>"; };
+		C236539F2BBDAB4E004BB665 /* NicknameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameViewModel.swift; sourceTree = "<group>"; };
 		C2455C812BBAAF9200150A16 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		C2455C832BBAAFC600150A16 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		C2455C852BBAC4D200150A16 /* ShoppingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingTableViewController.swift; sourceTree = "<group>"; };
@@ -193,6 +195,7 @@
 				C2A18C822BB6C0F700D1F770 /* BirthdayViewController.swift */,
 				C23653932BBD2E93004BB665 /* BirthdayViewModel.swift */,
 				C2A18C8A2BB803EA00D1F770 /* SampleViewController.swift */,
+				C236539F2BBDAB4E004BB665 /* NicknameViewModel.swift */,
 			);
 			path = SignUpOptional;
 			sourceTree = "<group>";
@@ -334,6 +337,7 @@
 				C21902492BB2DAFB00007F25 /* ReviewButtonViewController.swift in Sources */,
 				C23653982BBD8CBC004BB665 /* SearchViewModel.swift in Sources */,
 				C2455C862BBAC4D200150A16 /* ShoppingTableViewController.swift in Sources */,
+				C23653A02BBDAB4E004BB665 /* NicknameViewModel.swift in Sources */,
 				C2A18C892BB7D30000D1F770 /* SingUpViewController.swift in Sources */,
 				C2455C842BBAAFC600150A16 /* SearchTableViewCell.swift in Sources */,
 				C2DE8E882BB2EC5900542368 /* ReviewBasicViewController.swift in Sources */,
