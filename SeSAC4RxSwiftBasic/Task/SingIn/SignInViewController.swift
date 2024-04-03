@@ -11,51 +11,57 @@ import RxSwift
 import RxCocoa
 import Then
 
-final class SignInViewController: UIViewController {
-
+final class SignInViewController: BaseViewController {
+    
     private let emailTextField = SignTextField(placeholderText: "이메일을 입력해주세요")
     private let emailValidateLabel = UILabel()
-    private let emailDescription = Observable.just("올바른 이메일 형식이 아닙니다")
-    private let passwordTextField = SignTextField(placeholderText: "비밀번호를 입력해주세요")
+    private let passwordTextField: UITextField = {
+       let textField = SignTextField(placeholderText: "비밀번호를 입력해주세요")
+        textField.isSecureTextEntry = true
+        return textField
+    }()
     private let passwordValidateLabel = UILabel()
-    private let passwordDescription = Observable.just("8자 이상 입력해주세요")
-    private let signInButton = PointButton(title: "로그인")
-    private let signUpButton = UIButton()
+    private lazy var signInButton: UIButton = {
+        let button = PointButton(title: "로그인")
+        button.addTarget(self, action: #selector(signInButtonClicked), for: .touchUpInside)
+        return button
+    }()
+    private lazy var signUpButton: UIButton = {
+        let button = UIButton()
+        button.addTarget(self, action: #selector(signUpButtonClicked), for: .touchUpInside)
+        button.setTitle("회원이 아니십니까?", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        return button
+    }()
+    
+    private let viewModel = SignInViewModel()
     private let disposebag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.backgroundColor = .white
         
-        configureLayout()
-        configure()
         bind()
-        
-        signUpButton.addTarget(self, action: #selector(signUpButtonClicked), for: .touchUpInside)
     }
     
-    @objc func signUpButtonClicked() {
+    @objc private func signInButtonClicked() {
+        print("로그인 완료")
+    }
+    
+    @objc private func signUpButtonClicked() {
         navigationController?.pushViewController(SignUpViewController(), animated: true)
     }
     
-    func configure() {
-        signUpButton.setTitle("회원이 아니십니까?", for: .normal)
-        signUpButton.setTitleColor(.black, for: .normal)
+    override func configureHierarchy() {
+        [emailTextField, emailValidateLabel, passwordTextField, passwordValidateLabel, signInButton, signUpButton].forEach {
+            view.addSubview($0)
+        }
     }
     
-    func configureLayout() {
-        view.addSubview(emailTextField)
-        view.addSubview(emailValidateLabel)
-        view.addSubview(passwordTextField)
-        view.addSubview(passwordValidateLabel)
-        view.addSubview(signInButton)
-        view.addSubview(signUpButton)
-        
-        emailTextField.snp.makeConstraints { make in
-            make.height.equalTo(50)
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(200)
-            make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+    override func configureConstraints() {
+        emailTextField.snp.makeConstraints {
+            $0.height.equalTo(50)
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(200)
+            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
         
         emailValidateLabel.snp.makeConstraints {
@@ -64,10 +70,10 @@ final class SignInViewController: UIViewController {
             $0.height.equalTo(20)
         }
         
-        passwordTextField.snp.makeConstraints { make in
-            make.height.equalTo(50)
-            make.top.equalTo(emailTextField.snp.bottom).offset(30)
-            make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+        passwordTextField.snp.makeConstraints {
+            $0.height.equalTo(50)
+            $0.top.equalTo(emailTextField.snp.bottom).offset(30)
+            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
         
         passwordValidateLabel.snp.makeConstraints {
@@ -76,53 +82,54 @@ final class SignInViewController: UIViewController {
             $0.height.equalTo(20)
         }
         
-        signInButton.snp.makeConstraints { make in
-            make.height.equalTo(50)
-            make.top.equalTo(passwordTextField.snp.bottom).offset(30)
-            make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+        signInButton.snp.makeConstraints {
+            $0.height.equalTo(50)
+            $0.top.equalTo(passwordTextField.snp.bottom).offset(30)
+            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
         
-        signUpButton.snp.makeConstraints { make in
-            make.height.equalTo(50)
-            make.top.equalTo(signInButton.snp.bottom).offset(30)
-            make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+        signUpButton.snp.makeConstraints {
+            $0.height.equalTo(50)
+            $0.top.equalTo(signInButton.snp.bottom).offset(30)
+            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
     }
     
+    override func configureView() {
+        view.backgroundColor = .white
+    }
+    
     private func bind() {
-        let emailValidated = emailTextField.rx.text.orEmpty
-            .map{ $0.contains { value in
-                value == "@"
-            } }
         
-        emailDescription
+        emailTextField.rx.text.orEmpty
+            .bind(to: viewModel.inputEmailTextField)
+            .disposed(by: disposebag)
+        
+        viewModel.emailDescription
             .bind(to: emailValidateLabel.rx.text)
             .disposed(by: disposebag)
         
-        let passwordValidated = passwordTextField.rx.text.orEmpty
-            .map{ $0.count >= 8 }
+        passwordTextField.rx.text.orEmpty
+            .bind(to: viewModel.inputPasswordTextField)
+            .disposed(by: disposebag)
         
-        let everythingValidated = Observable.combineLatest(emailValidated, passwordValidated).map { $0 && $1 }
-                
-        passwordDescription
+        viewModel.passwordDescription
             .bind(to: passwordValidateLabel.rx.text)
             .disposed(by: disposebag)
         
         // email 형식이 맞으면 "올바른~"을 지우고, 로그인 버튼 활성화 시켜보자
-        emailValidated
+        viewModel.outputEmailValidated
             .bind(to: emailValidateLabel.rx.isHidden)
             .disposed(by: disposebag)
         
-        everythingValidated
+        viewModel.everythingValidated
             .bind(to: passwordValidateLabel.rx.isHidden, signInButton.rx.isEnabled)
             .disposed(by: disposebag)
         
         // 형식이 맞으면 로그인 버튼 색상을 바꿔보자
-        everythingValidated
-            .bind(with: self) { owner, value in
-                let color: UIColor = value ? .systemPink : .lightGray
-                owner.signInButton.backgroundColor = color
-            }
+        viewModel.everythingValidated
+            .map { $0 ? UIColor.systemPink : UIColor.lightGray }
+            .bind(to: signInButton.rx.backgroundColor)
             .disposed(by: disposebag)
     }
 }
