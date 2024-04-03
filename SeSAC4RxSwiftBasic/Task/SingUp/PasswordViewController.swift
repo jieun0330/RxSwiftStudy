@@ -13,38 +13,46 @@ import RxSwift
 import UIKit
 import SnapKit
 
-final class PasswordViewController: UIViewController {
-   
-    let passwordTextField = SignTextField(placeholderText: "비밀번호를 입력해주세요")
-    let nextButton = PointButton(title: "다음")
+final class PasswordViewController: BaseViewController {
+    
+    private let viewModel = PasswordViewModel()
+    
+    private let passwordTextField: UITextField = {
+        let textField = SignTextField(placeholderText: "비밀번호를 입력해주세요")
+        textField.isSecureTextEntry = true
+        return textField
+    }()
+    private lazy var nextButton: UIButton = {
+        let button = PointButton(title: "다음")
+        button.addTarget(self, action: #selector(nextButtonClicked), for: .touchUpInside)
+        return button
+    }()
     private let descriptionLabel = UILabel()
-    private let validText = Observable.just("8자 이상 입력해주세요")
+    
     private let disposebag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.backgroundColor = .white
         
-        configureLayout()
         bind()
-         
-        nextButton.addTarget(self, action: #selector(nextButtonClicked), for: .touchUpInside)
     }
     
-    @objc func nextButtonClicked() {
+    @objc private func nextButtonClicked() {
+        print(#function)
         navigationController?.pushViewController(PhoneViewController(), animated: true)
     }
     
-    func configureLayout() {
+    override func configureHierarchy() {
         [passwordTextField, descriptionLabel, nextButton].forEach {
             view.addSubview($0)
         }
-         
-        passwordTextField.snp.makeConstraints { make in
-            make.height.equalTo(50)
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(200)
-            make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+    }
+    
+    override func configureConstraints() {
+        passwordTextField.snp.makeConstraints {
+            $0.height.equalTo(50)
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(200)
+            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
         
         descriptionLabel.snp.makeConstraints {
@@ -53,30 +61,34 @@ final class PasswordViewController: UIViewController {
             $0.height.equalTo(20)
         }
         
-        nextButton.snp.makeConstraints { make in
-            make.height.equalTo(50)
-            make.top.equalTo(passwordTextField.snp.bottom).offset(30)
-            make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+        nextButton.snp.makeConstraints {
+            $0.height.equalTo(50)
+            $0.top.equalTo(passwordTextField.snp.bottom).offset(30)
+            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
+    }
+    
+    override func configureView() {
+        view.backgroundColor = .white
     }
     
     private func bind() {
         
-        validText
-            .bind(to: descriptionLabel.rx.text)
+        viewModel.validText
+            .asDriver()
+            .drive(descriptionLabel.rx.text)
             .disposed(by: disposebag)
         
-        let validatePassword = passwordTextField.rx.text.orEmpty
-            .map { $0.count >= 8 }
-        
-        validatePassword
-            .bind(with: self) { owner, value in
-                let color: UIColor = value ? .systemPink : .lightGray
-                owner.nextButton.backgroundColor = color
-            }
+        passwordTextField.rx.text.orEmpty
+            .bind(to: viewModel.passwordTextField)
             .disposed(by: disposebag)
         
-        validatePassword
+        viewModel.validatePassword
+            .map{ $0 ? UIColor.systemPink : UIColor.lightGray }
+            .bind(to: nextButton.rx.backgroundColor)
+            .disposed(by: disposebag)
+        
+        viewModel.validatePassword
             .bind(to: descriptionLabel.rx.isHidden, nextButton.rx.isEnabled)
             .disposed(by: disposebag)
     }

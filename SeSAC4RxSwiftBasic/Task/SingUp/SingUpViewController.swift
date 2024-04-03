@@ -25,7 +25,11 @@ final class SignUpViewController: BaseViewController {
         button.addTarget(self, action: #selector(validationButtonClicked), for: .touchUpInside)
         return button
     }()
-    private let nextButton = PointButton(title: "다음")
+    private lazy var nextButton: UIButton = {
+        let button = PointButton(title: "다음")
+        button.addTarget(self, action: #selector(nextButtonClicked), for: .touchUpInside)
+        return button
+    }()
     private let buttonColor = Observable.just(UIColor.blue)
     private let disposeBag = DisposeBag()
     
@@ -33,6 +37,10 @@ final class SignUpViewController: BaseViewController {
         super.viewDidLoad()
         
         bind()
+    }
+    
+    @objc private func nextButtonClicked() {
+        print(#function)
     }
     
     @objc private func validationButtonClicked() {
