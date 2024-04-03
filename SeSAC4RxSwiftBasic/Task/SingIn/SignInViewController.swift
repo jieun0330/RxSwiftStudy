@@ -27,12 +27,12 @@ final class SignInViewController: BaseViewController {
     
     private lazy var signInButton: UIButton = {
         let button = PointButton(title: "로그인")
-        button.addTarget(self, action: #selector(signInButtonClicked), for: .touchUpInside)
         return button
     }()
     
     private lazy var signUpButton: UIButton = {
         let button = UIButton()
+        button.addTarget(self, action: #selector(signUpButtonClicked), for: .touchUpInside)
         button.setTitle("회원이 아니십니까?", for: .normal)
         button.setTitleColor(.black, for: .normal)
         return button

@@ -35,6 +35,8 @@
 		C236539C2BBD9CD8004BB665 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C236539B2BBD9CD8004BB665 /* SignUpViewModel.swift */; };
 		C236539E2BBDA4F5004BB665 /* PasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C236539D2BBDA4F5004BB665 /* PasswordViewModel.swift */; };
 		C23653A02BBDAB4E004BB665 /* NicknameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C236539F2BBDAB4E004BB665 /* NicknameViewModel.swift */; };
+		C23653A22BBDAC43004BB665 /* ShoppingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23653A12BBDAC43004BB665 /* ShoppingItem.swift */; };
+		C23653A42BBDACCF004BB665 /* ShoppingTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23653A32BBDACCF004BB665 /* ShoppingTableViewModel.swift */; };
 		C2455C822BBAAF9200150A16 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2455C812BBAAF9200150A16 /* SearchViewController.swift */; };
 		C2455C842BBAAFC600150A16 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2455C832BBAAFC600150A16 /* SearchTableViewCell.swift */; };
 		C2455C862BBAC4D200150A16 /* ShoppingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2455C852BBAC4D200150A16 /* ShoppingTableViewController.swift */; };
@@ -81,6 +83,8 @@
 		C236539B2BBD9CD8004BB665 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		C236539D2BBDA4F5004BB665 /* PasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordViewModel.swift; sourceTree = "<group>"; };
 		C236539F2BBDAB4E004BB665 /* NicknameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameViewModel.swift; sourceTree = "<group>"; };
+		C23653A12BBDAC43004BB665 /* ShoppingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingItem.swift; sourceTree = "<group>"; };
+		C23653A32BBDACCF004BB665 /* ShoppingTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingTableViewModel.swift; sourceTree = "<group>"; };
 		C2455C812BBAAF9200150A16 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		C2455C832BBAAFC600150A16 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		C2455C852BBAC4D200150A16 /* ShoppingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingTableViewController.swift; sourceTree = "<group>"; };
@@ -168,6 +172,8 @@
 			children = (
 				C2455C852BBAC4D200150A16 /* ShoppingTableViewController.swift */,
 				C2455C872BBACFB700150A16 /* ShoppingTableTableViewCell.swift */,
+				C23653A12BBDAC43004BB665 /* ShoppingItem.swift */,
+				C23653A32BBDACCF004BB665 /* ShoppingTableViewModel.swift */,
 				C2A18C8F2BB8081500D1F770 /* TaskTableViewController.swift */,
 				C2A18C842BB7D2CB00D1F770 /* SingIn */,
 				C2A18C812BB6C0D400D1F770 /* SingUp */,
@@ -332,10 +338,12 @@
 				C21902152BB2574B00007F25 /* AppDelegate.swift in Sources */,
 				C2A18C792BB6C04100D1F770 /* SignTextField.swift in Sources */,
 				C203CAEC2BB316A700906E33 /* SimplePickerViewController.swift in Sources */,
+				C23653A42BBDACCF004BB665 /* ShoppingTableViewModel.swift in Sources */,
 				C2A18C7B2BB6C07E00D1F770 /* PointButton.swift in Sources */,
 				C2A18C752BB6C01800D1F770 /* PasswordViewController.swift in Sources */,
 				C21902492BB2DAFB00007F25 /* ReviewButtonViewController.swift in Sources */,
 				C23653982BBD8CBC004BB665 /* SearchViewModel.swift in Sources */,
+				C23653A22BBDAC43004BB665 /* ShoppingItem.swift in Sources */,
 				C2455C862BBAC4D200150A16 /* ShoppingTableViewController.swift in Sources */,
 				C23653A02BBDAB4E004BB665 /* NicknameViewModel.swift in Sources */,
 				C2A18C892BB7D30000D1F770 /* SingUpViewController.swift in Sources */,

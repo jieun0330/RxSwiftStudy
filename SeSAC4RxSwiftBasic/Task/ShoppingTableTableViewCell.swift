@@ -15,6 +15,8 @@ final class ShoppingTableTableViewCell: BaseTableViewCell {
     
     static let identifier = "ShoppingTableTableViewCell"
     
+    private let viewModel = ShoppingTableViewModel()
+    
     let check = UIButton().then {
         $0.setImage(UIImage(systemName: "checkmark.square"), for: .normal)
     }
@@ -26,7 +28,7 @@ final class ShoppingTableTableViewCell: BaseTableViewCell {
     }
     
     var disposeBag = DisposeBag()
-
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super .init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -66,7 +68,28 @@ final class ShoppingTableTableViewCell: BaseTableViewCell {
         
         disposeBag = DisposeBag()
     }
+    
+    func configureCellItemTitle(element: String) {
+        itemTitle.text = element
+    }
+    
+    func configureCellButton(row: Int) {
         
+        check.rx.tap
+            .bind(with: self) { owner, _ in
+                owner.viewModel.items[row].check.toggle()
+                owner.viewModel.items[row].check ? owner.check.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal) : owner.check.setImage(UIImage(systemName: "checkmark.square"), for: .normal)
+            }
+            .disposed(by: disposeBag)
+        
+        starButton.rx.tap
+            .bind(with: self) { owner, _ in
+                owner.viewModel.items[row].star.toggle()
+                owner.viewModel.items[row].star ? owner.starButton.setImage(UIImage(systemName: "star.fill"), for: .normal) : owner.starButton.setImage(UIImage(systemName: "star"), for: .normal)
+            }
+            .disposed(by: disposeBag)
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

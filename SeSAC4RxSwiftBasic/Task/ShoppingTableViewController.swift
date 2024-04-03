@@ -11,37 +11,32 @@ import Then
 import RxSwift
 import RxCocoa
 
-struct Item {
-    var check: Bool = false
-    var item: String
-    var star: Bool = false
-}
-
 final class ShoppingTableViewController: BaseViewController {
     
-    private let textField = UITextField().then {
-        $0.placeholder = "무엇을 구매하실 건가요?"
-        $0.backgroundColor = .systemGray6
-    }
+    private let viewModel = ShoppingTableViewModel()
     
-    private lazy var addButton = UIButton().then {
-        $0.setTitle("추가", for: .normal)
-        $0.setTitleColor(.black, for: .normal)
-        $0.addTarget(self, action: #selector(addButtonClicked), for: .touchUpInside)
-    }
+    private let textField: UITextField =  {
+        let textField = UITextField()
+        textField.placeholder = "무엇을 구매하실 건가요?"
+        textField.backgroundColor = .systemGray6
+        return textField
+    }()
     
-    private let tableView = UITableView().then {
-        $0.register(ShoppingTableTableViewCell.self, forCellReuseIdentifier: ShoppingTableTableViewCell.identifier)
-        $0.backgroundColor = .white
-        $0.rowHeight = 100
-    }
+    private lazy var addButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("추가", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.addTarget(self, action: #selector(addButtonClicked), for: .touchUpInside)
+        return button
+    }()
     
-    private var items: [Item] = [Item(item: "그립톡 구매하기"),
-                                 Item(item: "사이다 구매"),
-                                 Item(item: "아이패드 케이스 최저가 알아보기"),
-                                 Item(item: "양말")]
-    
-    private lazy var data = BehaviorSubject(value: items)
+    private let tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.register(ShoppingTableTableViewCell.self, forCellReuseIdentifier: ShoppingTableTableViewCell.identifier)
+        tableView.backgroundColor = .white
+        tableView.rowHeight = 100
+        return tableView
+    }()
     
     private let disposeBag = DisposeBag()
     
@@ -87,42 +82,24 @@ final class ShoppingTableViewController: BaseViewController {
         if textField.text?.trimmingCharacters(in: .whitespaces) == "" { return }
         let addItem = textField.text
         // addItem을 items에 더해주고
-        items.append(Item(item: addItem!))
+        viewModel.items.append(Item(item: addItem!))
         // onNext: Observable의 최신값을 emit
         // data의 최신값을 업데이트하는 느낌
-        data.onNext(items)
+        viewModel.data.onNext(viewModel.items)
         textField.text?.removeAll()
     }
     
     private func bind() {
-        data
+        viewModel.data
             .bind(to: tableView.rx.items(cellIdentifier: ShoppingTableTableViewCell.identifier, cellType: ShoppingTableTableViewCell.self)) { row, element, cell in
                 
-                cell.itemTitle.text = element.item
-                cell.check.rx.tap
-                    .bind(with: self) { owner, _ in
-                        owner.items[row].check.toggle()
-                        owner.items[row].check ? cell.check.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal) : cell.check.setImage(UIImage(systemName: "checkmark.square"), for: .normal)
-                    }
-                    .disposed(by: cell.disposeBag)
-                
-                cell.starButton.rx.tap
-                    .bind(with: self) { owner, _ in
-                        owner.items[row].star.toggle()
-                        owner.items[row].star ? cell.starButton.setImage(UIImage(systemName: "star.fill"), for: .normal) : cell.starButton.setImage(UIImage(systemName: "star"), for: .normal)
-                    }
-                    .disposed(by: cell.disposeBag)
+                cell.configureCellItemTitle(element: element.item)
+                cell.configureCellButton(row: row)
             }
             .disposed(by: disposeBag)
         
-        textField.rx.text.orEmpty
-//            .debounce(.seconds(1), scheduler: MainScheduler.instance)
-            .distinctUntilChanged()
-            .bind(with: self) { owner, value in
-                
-                let result = value.isEmpty ? owner.items : owner.items.filter { $0.item.contains(value) }
-                owner.data.onNext(result)
-            }
-            .disposed(by: disposeBag)
+        viewModel.textField
+            .bind(to: textField.rx.text.orEmpty)
+            .disposed(by: disposeBag)        
     }
 }
