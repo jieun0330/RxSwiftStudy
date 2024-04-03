@@ -86,7 +86,10 @@ final class ShoppingTableViewController: BaseViewController {
         
         if searchBar.text?.trimmingCharacters(in: .whitespaces) == "" { return }
         let addItem = searchBar.text
+        // addItem을 items에 더해주고
         items.append(Item(item: addItem!))
+        // onNext: Observable의 최신값을 emit
+        // data의 최신값을 업데이트하는 느낌
         data.onNext(items)
         searchBar.text?.removeAll()
     }

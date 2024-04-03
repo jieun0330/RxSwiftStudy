@@ -17,24 +17,64 @@ final class TaskTableViewController: BaseViewController {
         $0.backgroundColor = .lightGray
         $0.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
     }
+    
     private let textField = UITextField().then {
         $0.backgroundColor = .orange
     }
     
+    private lazy var addButton = UIButton().then {
+        $0.setTitle("추가", for: .normal)
+        $0.setTitleColor(.orange, for: .normal)
+        $0.addTarget(self, action: #selector(addButtonClicked), for: .touchUpInside)
+    }
+    
     private let disposeBag = DisposeBag()
     
-    let items = Observable.just([
-        "First Item",
-        "Second Item",
-        "Third Item"
-    ])
+    private var items = ["First Item", "Second Item", "Third Item"]
+    
+    private lazy var data = BehaviorSubject(value: items)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configureView()
+        bind()
+    }
+    
+    override func configureHierarchy() {
+        [textField, addButton, tableView].forEach {
+            view.addSubview($0)
+        }
+    }
+    
+    override func configureConstraints() {
+        textField.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.leading.equalToSuperview()
+            $0.trailing.equalTo(addButton.snp.leading)
+            $0.height.equalTo(50)
+        }
         
-        items
+        tableView.snp.makeConstraints {
+            $0.top.equalTo(textField.snp.bottom)
+            $0.horizontalEdges.equalToSuperview()
+            $0.bottom.equalToSuperview()
+        }
+        
+        addButton.snp.makeConstraints {
+            $0.top.equalTo(textField)
+            $0.trailing.equalToSuperview()
+            $0.size.equalTo(50)
+        }
+    }
+    
+    override func configureView() {
+        view.backgroundColor = .white
+    }
+    
+    private func bind() {
+        
+        data
             .bind(to: tableView.rx.items) { (tableView, row, element) in
                 let cell = tableView.dequeueReusableCell(withIdentifier: "Cell")!
                 cell.textLabel?.text = "\(element) @ row \(row)"
@@ -56,27 +96,14 @@ final class TaskTableViewController: BaseViewController {
             }.disposed(by: disposeBag)
     }
     
-    override func configureHierarchy() {
-        [textField, tableView].forEach {
-            view.addSubview($0)
-        }
-    }
-    
-    override func configureConstraints() {
-        textField.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide)
-            $0.horizontalEdges.equalToSuperview()
-            $0.height.equalTo(50)
-        }
-        
-        tableView.snp.makeConstraints {
-            $0.top.equalTo(textField.snp.bottom)
-            $0.horizontalEdges.equalToSuperview()
-            $0.bottom.equalToSuperview()
-        }
-    }
-    
-    override func configureView() {
-        view.backgroundColor = .white
+    @objc private func addButtonClicked() {
+        // 1️⃣ 추가 버튼 누르면
+        // 2️⃣ 텍스트필드에 입력한 text(Observable)
+//        textField.text
+        // 3️⃣ items에 추가 (Observer)
+        if textField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" { return }
+        items.append(textField.text!)
+        // 4️⃣ data를 최신값으로 emit
+        data.onNext(items)
     }
 }
