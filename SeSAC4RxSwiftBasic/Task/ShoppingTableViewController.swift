@@ -19,7 +19,7 @@ struct Item {
 
 final class ShoppingTableViewController: BaseViewController {
     
-    private let searchBar = UITextField().then {
+    private let textField = UITextField().then {
         $0.placeholder = "무엇을 구매하실 건가요?"
         $0.backgroundColor = .systemGray6
     }
@@ -52,13 +52,13 @@ final class ShoppingTableViewController: BaseViewController {
     }
     
     override func configureHierarchy() {
-        [searchBar, addButton, tableView].forEach {
+        [textField, addButton, tableView].forEach {
             view.addSubview($0)
         }
     }
     
     override func configureConstraints() {
-        searchBar.snp.makeConstraints {
+        textField.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide)
             $0.leading.equalTo(view.safeAreaLayoutGuide).offset(10)
             $0.trailing.equalTo(addButton.snp.leading)
@@ -67,12 +67,12 @@ final class ShoppingTableViewController: BaseViewController {
         
         addButton.snp.makeConstraints {
             $0.trailing.equalToSuperview()
-            $0.top.equalTo(searchBar.snp.top)
+            $0.top.equalTo(textField.snp.top)
             $0.size.equalTo(50)
         }
         
         tableView.snp.makeConstraints {
-            $0.top.equalTo(searchBar.snp.bottom)
+            $0.top.equalTo(textField.snp.bottom)
             $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalToSuperview()
         }
@@ -84,14 +84,14 @@ final class ShoppingTableViewController: BaseViewController {
     
     @objc private func addButtonClicked() {
         
-        if searchBar.text?.trimmingCharacters(in: .whitespaces) == "" { return }
-        let addItem = searchBar.text
+        if textField.text?.trimmingCharacters(in: .whitespaces) == "" { return }
+        let addItem = textField.text
         // addItem을 items에 더해주고
         items.append(Item(item: addItem!))
         // onNext: Observable의 최신값을 emit
         // data의 최신값을 업데이트하는 느낌
         data.onNext(items)
-        searchBar.text?.removeAll()
+        textField.text?.removeAll()
     }
     
     private func bind() {
@@ -115,7 +115,7 @@ final class ShoppingTableViewController: BaseViewController {
             }
             .disposed(by: disposeBag)
         
-        searchBar.rx.text.orEmpty
+        textField.rx.text.orEmpty
 //            .debounce(.seconds(1), scheduler: MainScheduler.instance)
             .distinctUntilChanged()
             .bind(with: self) { owner, value in
@@ -124,7 +124,5 @@ final class ShoppingTableViewController: BaseViewController {
                 owner.data.onNext(result)
             }
             .disposed(by: disposeBag)
-        
-        
     }
 }

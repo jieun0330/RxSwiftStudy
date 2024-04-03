@@ -11,38 +11,31 @@ import RxSwift
 import RxCocoa
 import Then
 
-final class PhoneViewController: UIViewController {
+final class PhoneViewController: BaseViewController {
+    
+    private let viewModel = PhoneViewModel()
    
-    let phoneTextField = SignTextField(placeholderText: "휴대폰번호를 입력해주세요").then {
+    private let phoneTextField = SignTextField(placeholderText: "휴대폰번호를 입력해주세요").then {
         $0.keyboardType = .numberPad
     }
-    private let phoneTextFieldLabel = Observable.just("010")
     private let phoneDesicription = UILabel()
-    private let phoneDescriptionLabel = Observable.just("10자 이상 입력해주세요")
     private let nextButton = PointButton(title: "다음")
     private let disposebag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .white
-        
-        configureLayout()
         bind()
-        
         nextButton.addTarget(self, action: #selector(nextButtonClicked), for: .touchUpInside)
     }
-    
-    @objc func nextButtonClicked() {
-        navigationController?.pushViewController(NicknameViewController(), animated: true)
-    }
-
-    
-    func configureLayout() {
+        
+    override func configureHierarchy() {
         [phoneTextField, phoneDesicription, nextButton].forEach {
             view.addSubview($0)
         }
-         
+    }
+    
+    override func configureConstraints() {
         phoneTextField.snp.makeConstraints { make in
             make.height.equalTo(50)
             make.top.equalTo(view.safeAreaLayoutGuide).offset(200)
@@ -62,11 +55,20 @@ final class PhoneViewController: UIViewController {
         }
     }
     
-    func bind() {
-        phoneDescriptionLabel
+    override func configureView() {
+        view.backgroundColor = .white
+    }
+    
+    @objc private func nextButtonClicked() {
+        navigationController?.pushViewController(NicknameViewController(), animated: true)
+    }
+    
+    private func bind() {
+        viewModel.phoneDescriptionLabel
             .bind(to: phoneDesicription.rx.text)
             .disposed(by: disposebag)
-        phoneTextFieldLabel
+        
+        viewModel.phoneTextFieldLabel
             .bind(to: phoneTextField.rx.text)
             .disposed(by: disposebag)
         
