@@ -9,7 +9,9 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class SearchViewController: UIViewController {
+final class SearchViewController: UIViewController {
+    
+    private let searchBar = UISearchBar()
    
     private let tableView: UITableView = {
        let view = UITableView()
@@ -19,13 +21,14 @@ class SearchViewController: UIViewController {
         view.separatorStyle = .none
        return view
      }()
+          
+//    private var data = ["A", "B", "C", "AB", "D", "ABC", "BBB", "EC", "SA", "AAAB", "ED", "F", "G", "H"]
     
-    let searchBar = UISearchBar()
-      
-    var data = ["A", "B", "C", "AB", "D", "ABC", "BBB", "EC", "SA", "AAAB", "ED", "F", "G", "H"]
-    private lazy var items = BehaviorSubject(value: data)
+//    private lazy var items = BehaviorSubject(value: data)
     
-    let disposeBag = DisposeBag()
+    private let viewModel = SearchViewModel()
+    
+    private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,18 +43,16 @@ class SearchViewController: UIViewController {
         view.addSubview(searchBar)
 //        navigationItem.titleView = searchBar
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "추가", style: .plain, target: self, action: #selector(plusButtonClicked))
+//        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "추가", style: .plain, target: self, action: #selector(plusButtonClicked))
     }
     
-    @objc func plusButtonClicked() {
-        let sample = ["A", "B", "C", "D", "E"]
-        data.append(sample.randomElement()!) // sample을 데이터에 추가하고
-        items.onNext(data) // data를 방출하면 되는거니까
-        
-//        items.onNext(sample) // items에 sample 데이터를 방출한다 -> 덮어씌움
-        
-    }
-
+//    @objc func plusButtonClicked() {
+//        let sample = ["A", "B", "C", "D", "E"]
+//        data.append(sample.randomElement()!) // sample을 데이터에 추가하고
+//        items.onNext(data) // data를 방출하면 되는거니까
+//        
+////        items.onNext(sample) // items에 sample 데이터를 방출한다 -> 덮어씌움
+//    }
     
     private func configure() {
         view.addSubview(searchBar)
@@ -71,7 +72,11 @@ class SearchViewController: UIViewController {
     
     private func bind() {
         
-        items
+        searchBar.rx.text.orEmpty
+            .bind(to: viewModel.inputQuery)
+            .disposed(by: disposeBag)
+        
+        viewModel.items
             .bind(to: tableView.rx.items(cellIdentifier: SearchTableViewCell.identifier, cellType: SearchTableViewCell.self)) { row, element, cell in
                 cell.appNameLabel.text = element
                 cell.downloadButton.rx.tap
@@ -82,41 +87,41 @@ class SearchViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
-        tableView.rx.itemSelected
-            .bind(with: self, onNext: { owner, indexPath in
-                owner.data.remove(at: indexPath.row)
-                owner.items.onNext(owner.data)
-            })
-            .disposed(by: disposeBag)
+//        tableView.rx.itemSelected
+//            .bind(with: self, onNext: { owner, indexPath in
+//                owner.data.remove(at: indexPath.row)
+//                owner.items.onNext(owner.data)
+//            })
+//            .disposed(by: disposeBag)
         
         // 검색했을때 해당되는거 나오게 하기
-        searchBar.rx.text.orEmpty
-        // 검색하고 1초 뒤
-            .debounce(.seconds(1), scheduler: MainScheduler.instance)
-        // 동일한 검색어 호출 방지
-            .distinctUntilChanged()
-            .bind(with: self, onNext: { owner, value in
-                
-                let result = value.isEmpty ? owner.data : owner.data.filter { $0.contains(value) }
-                
-                owner.items.onNext(result)
-                print(value)
-                
-            })
-            .disposed(by: disposeBag)
+//        searchBar.rx.text.orEmpty
+//        // 검색하고 1초 뒤
+//            .debounce(.seconds(1), scheduler: MainScheduler.instance)
+//        // 동일한 검색어 호출 방지
+//            .distinctUntilChanged()
+//            .bind(with: self, onNext: { owner, value in
+//                
+//                let result = value.isEmpty ? owner.data : owner.data.filter { $0.contains(value) }
+//                
+//                owner.items.onNext(result)
+//                print(value)
+//                
+//            })
+//            .disposed(by: disposeBag)
         
         // 검색 버튼 눌렀을 때
-        searchBar.rx.searchButtonClicked
-            .withLatestFrom(searchBar.rx.text.orEmpty)
-            .distinctUntilChanged()
-            .bind(with: self, onNext: { owner, value in
-                
-                let result = value.isEmpty ? owner.data : owner.data.filter { $0.contains(value) }
-                
-                owner.items.onNext(result)
-                print(value)
-                
-            })
-            .disposed(by: disposeBag)
+//        searchBar.rx.searchButtonClicked
+//            .withLatestFrom(searchBar.rx.text.orEmpty)
+//            .distinctUntilChanged()
+//            .bind(with: self, onNext: { owner, value in
+//                
+//                let result = value.isEmpty ? owner.data : owner.data.filter { $0.contains(value) }
+//                
+//                owner.items.onNext(result)
+//                print(value)
+//                
+//            })
+//            .disposed(by: disposeBag)
     }
 }

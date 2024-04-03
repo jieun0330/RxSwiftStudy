@@ -30,6 +30,7 @@
 		C219024B2BB2DB7500007F25 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C219024A2BB2DB7500007F25 /* BaseViewController.swift */; };
 		C23653942BBD2E93004BB665 /* BirthdayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23653932BBD2E93004BB665 /* BirthdayViewModel.swift */; };
 		C23653962BBD3BCE004BB665 /* PhoneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23653952BBD3BCE004BB665 /* PhoneViewModel.swift */; };
+		C23653982BBD8CBC004BB665 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23653972BBD8CBC004BB665 /* SearchViewModel.swift */; };
 		C2455C822BBAAF9200150A16 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2455C812BBAAF9200150A16 /* SearchViewController.swift */; };
 		C2455C842BBAAFC600150A16 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2455C832BBAAFC600150A16 /* SearchTableViewCell.swift */; };
 		C2455C862BBAC4D200150A16 /* ShoppingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2455C852BBAC4D200150A16 /* ShoppingTableViewController.swift */; };
@@ -71,6 +72,7 @@
 		C219024A2BB2DB7500007F25 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		C23653932BBD2E93004BB665 /* BirthdayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthdayViewModel.swift; sourceTree = "<group>"; };
 		C23653952BBD3BCE004BB665 /* PhoneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneViewModel.swift; sourceTree = "<group>"; };
+		C23653972BBD8CBC004BB665 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		C2455C812BBAAF9200150A16 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		C2455C832BBAAFC600150A16 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		C2455C852BBAC4D200150A16 /* ShoppingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingTableViewController.swift; sourceTree = "<group>"; };
@@ -219,6 +221,7 @@
 				C203CAFB2BB4428A00906E33 /* SeSAC61ViewController.swift */,
 				C2455C812BBAAF9200150A16 /* SearchViewController.swift */,
 				C2455C832BBAAFC600150A16 /* SearchTableViewCell.swift */,
+				C23653972BBD8CBC004BB665 /* SearchViewModel.swift */,
 			);
 			path = Review;
 			sourceTree = "<group>";
@@ -320,6 +323,7 @@
 				C2A18C7B2BB6C07E00D1F770 /* PointButton.swift in Sources */,
 				C2A18C752BB6C01800D1F770 /* PasswordViewController.swift in Sources */,
 				C21902492BB2DAFB00007F25 /* ReviewButtonViewController.swift in Sources */,
+				C23653982BBD8CBC004BB665 /* SearchViewModel.swift in Sources */,
 				C2455C862BBAC4D200150A16 /* ShoppingTableViewController.swift in Sources */,
 				C2A18C892BB7D30000D1F770 /* SingUpViewController.swift in Sources */,
 				C2455C842BBAAFC600150A16 /* SearchTableViewCell.swift in Sources */,
