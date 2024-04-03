@@ -81,29 +81,22 @@ final class TaskTableViewController: BaseViewController {
                 return cell
             }
             .disposed(by: disposeBag)
-        
+                
         tableView.rx.itemSelected
-            .subscribe { indexPath in
-                print(indexPath)
-            } onDisposed: {
-                print("disposed")
-            }
+            .bind(with: self, onNext: { owner, indexPath in
+                owner.items.remove(at: indexPath.row)
+                owner.data.onNext(owner.items)
+            })
             .disposed(by: disposeBag)
-        
-        tableView.rx.modelSelected(String.self)
-            .subscribe { model in
-                print(model)
-            }.disposed(by: disposeBag)
     }
     
     @objc private func addButtonClicked() {
         // 1️⃣ 추가 버튼 누르면
-        // 2️⃣ 텍스트필드에 입력한 text(Observable)
-//        textField.text
         // 3️⃣ items에 추가 (Observer)
         if textField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" { return }
         items.append(textField.text!)
         // 4️⃣ data를 최신값으로 emit
         data.onNext(items)
+        textField.text?.removeAll()
     }
 }

@@ -124,5 +124,7 @@ final class ShoppingTableViewController: BaseViewController {
                 owner.data.onNext(result)
             }
             .disposed(by: disposeBag)
+        
+        
     }
 }
